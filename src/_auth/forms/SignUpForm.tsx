@@ -17,6 +17,8 @@ import { signUpValidationSchema } from "@/lib/validation";
 import { z } from "zod";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
+import { createUserAccount } from "@/lib/appwrite/api";
+import { getRandomValues } from "crypto";
 
 const SignUpForm = () => {
   const isLoading = false;
@@ -32,8 +34,10 @@ const SignUpForm = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof signUpValidationSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof signUpValidationSchema>) {
+    const newUser = await createUserAccount(values);
+
+    console.log(newUser);
   }
 
   return (
@@ -42,7 +46,7 @@ const SignUpForm = () => {
         <img src="" alt="" />
         <h2 className="h3-bold md:h2-bold pt-5 sm:pt-12">Create an account</h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
-          To use CommunitySnap to enter details.
+          To use CommunitySnap, please enter details.
         </p>
 
         <form
